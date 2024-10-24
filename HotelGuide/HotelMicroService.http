@@ -1,0 +1,6 @@
+@HotelMicroService_HostAddress = http://localhost:5177
+
+GET {{HotelMicroService_HostAddress}}/hotel/
+Accept: application/json
+
+###
