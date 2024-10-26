@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Interfaces;
 using ReportMicroService.DTOs;
 using ReportMicroService.Interfaces;
 
@@ -9,17 +10,20 @@ namespace ReportMicroService.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
+        private readonly IRabbitMQService _rabbitMQService;
 
-        public ReportController(IReportService reportService)
+        public ReportController(IReportService reportService, IRabbitMQService rabbitMQService)
         {
             _reportService = reportService;
+            _rabbitMQService = rabbitMQService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] ReportCreateDto reportDto)
+        public async Task<IActionResult> CreateReport([FromBody] ReportRequest reportRequest)
         {
-            var report = await _reportService.CreateReportAsync(reportDto);
-            return CreatedAtAction(nameof(GetReportById), new { reportId = report.ReportId }, report);
+            var report = await _reportService.CreateReportAsync(reportRequest);
+            _rabbitMQService.Publish(reportRequest, "reportQueue");
+            return CreatedAtAction(nameof(GetReports), new { id = report.Id }, report);
         }
 
         [HttpGet]

@@ -5,7 +5,7 @@ namespace ReportMicroService.Interfaces
 {
     public interface IReportService
     {
-        Task<Report> CreateReportAsync(ReportCreateDto reportDto);
+        Task<Report> CreateReportAsync(ReportRequest reportRequest);
         List<Report> GetReports();
         Report GetReportById(Guid reportId);
     }

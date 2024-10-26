@@ -1,5 +1,6 @@
 ﻿using HotelGuide.Interfaces;
 using HotelGuide.Model;
+using HotelMicroService.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelGuide.Controllers
@@ -45,6 +46,37 @@ namespace HotelGuide.Controllers
             if (foundHotel == null) return NotFound();
             return Ok(foundHotel);
         }
+
+        [HttpGet("{id}/authorities")]
+        public async Task<ActionResult<IEnumerable<Authority>>> GetAuthorities(Guid id)
+        {
+            var hotel = await _hotelService.GetHotelById(id);
+            if (hotel == null) return NotFound();
+            return hotel.Authorities;
+        }
+
+        //[HttpPost("{id}/contacts")]
+        //public async Task<IActionResult> AddContact(Guid id, ContactInfo contact)
+        //{
+        //    var hotel = await _hotelService.GetHotelById(id);
+        //    if (hotel == null) return NotFound();
+        //    contact.Id = Guid.NewGuid();
+        //    await _hotelService.CreateContactInfo(contact);
+        //    return CreatedAtAction(nameof(GetHotel), new { id }, hotel);
+        //}
+
+        //[HttpDelete("{hotelId}/contacts/{contactId}")]
+        //public async Task<IActionResult> RemoveContact(Guid hotelId, Guid contactId)
+        //{
+        //    var hotel = await _hotelService.GetHotelById(hotelId);
+        //    if (hotel == null) return NotFound();
+
+        //    var contact = hotel.ContactInfos.FirstOrDefault(c => c.Id == contactId);
+        //    if (contact == null) return NotFound();
+
+        //    await _hotelService.RemoveContact(contact.Id);
+        //    return NoContent();
+        //}
 
     }
 }

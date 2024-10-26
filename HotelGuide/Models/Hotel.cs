@@ -1,12 +1,12 @@
-﻿namespace HotelGuide.Model
+﻿using HotelMicroService.Models;
+
+namespace HotelGuide.Model
 {
     public class Hotel
     {
         public Guid UUID { get; set; }
         public string Name { get; set; }
-        public string CompanyName { get; set; }
-        public string AuthorityFirstName { get; set; }
-        public string AuthorityLastName { get; set; }
+        public List<Authority> Authorities { get; set; } = new List<Authority>();
         public List<ContactInfo> ContactInfos { get; set; }
     }
 }

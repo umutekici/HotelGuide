@@ -1,6 +1,7 @@
 ﻿using HotelGuide.Context;
 using HotelGuide.Interfaces;
 using HotelGuide.Model;
+using HotelMicroService.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelGuide.Repositories
@@ -38,6 +39,14 @@ namespace HotelGuide.Repositories
                 _context.Hotels.Remove(hotel);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Hotel>> GetByLocationAsync(string location)
+        {
+             return _context.Hotels.Where(h => h.ContactInfos.Any(ci =>
+            ci.Type == ContactType.Location &&
+            ci.Content.Equals(location, StringComparison.OrdinalIgnoreCase)))
+        .ToList();
         }
     }
 }

@@ -5,7 +5,14 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelMicroService", "HotelGuide\HotelMicroService.csproj", "{58AD1AE1-4985-445A-9F4F-C8D8F1DC69BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportMicroService", "ReportMicroService\ReportMicroService.csproj", "{89E91FC3-FD27-4C13-B9E2-A52CE2173A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportMicroService", "ReportMicroService\ReportMicroService.csproj", "{89E91FC3-FD27-4C13-B9E2-A52CE2173A1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Çözüm Öğeleri", "Çözüm Öğeleri", "{3CC6B316-616B-40BE-A818-AF3F24A8A64D}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,10 @@ Global
 		{89E91FC3-FD27-4C13-B9E2-A52CE2173A1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89E91FC3-FD27-4C13-B9E2-A52CE2173A1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89E91FC3-FD27-4C13-B9E2-A52CE2173A1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
