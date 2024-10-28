@@ -41,6 +41,31 @@ namespace HotelGuide.Repositories
             }
         }
 
+        #region Contact Operations
+
+        public async Task<ContactInfo> GetContactByIdAsync(Guid id)
+        {
+            return await _context.ContactInfos.FindAsync(id);
+        }
+
+        public async Task CreateContactAsync(ContactInfo contactInfo)
+        {
+            await _context.ContactInfos.AddAsync(contactInfo);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteContactAsync(Guid id)
+        {
+            var contact = await GetContactByIdAsync(id);
+            if (contact != null)
+            {
+                _context.ContactInfos.Remove(contact);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        #endregion
+
         public async Task<IEnumerable<Hotel>> GetByLocationAsync(string location)
         {
              return _context.Hotels.Where(h => h.ContactInfos.Any(ci =>

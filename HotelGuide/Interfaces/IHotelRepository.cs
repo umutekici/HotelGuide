@@ -8,6 +8,10 @@ namespace HotelGuide.Interfaces
         Task<List<Hotel>> GetAllHotelsAsync();
         Task CreateHotelAsync(Hotel hotel);
         Task DeleteHotelAsync(Guid uuid);
+        Task CreateContactAsync(ContactInfo contactInfo);
+        Task DeleteContactAsync(Guid id);
+        Task<ContactInfo> GetContactByIdAsync(Guid id);
         Task<IEnumerable<Hotel>> GetByLocationAsync(string location);
+
     }
 }

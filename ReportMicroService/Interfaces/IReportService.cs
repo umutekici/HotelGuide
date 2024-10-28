@@ -8,5 +8,6 @@ namespace ReportMicroService.Interfaces
         Task<Report> CreateReportAsync(ReportRequest reportRequest);
         List<Report> GetReports();
         Report GetReportById(Guid reportId);
+        Task<Report> SaveReportAsync(Report report);
     }
 }

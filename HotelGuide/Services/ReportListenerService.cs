@@ -11,7 +11,6 @@ namespace HotelMicroService.Services
     {
         private readonly IHotelRepository _hotelRepository;
         private readonly IRabbitMQService _rabbitMQService;
-
         public ReportListenerService(IRabbitMQService rabbitMQService, IHotelRepository hotelRepository)
         {
             _rabbitMQService = rabbitMQService;
@@ -37,13 +36,11 @@ namespace HotelMicroService.Services
             var hotels = await _hotelRepository.GetByLocationAsync(reportRequest.Location);
             var report = new Report
             {
-                Id = Guid.NewGuid(),
                 Location = reportRequest.Location,
                 HotelCount = hotels.Count(),
                 RequestedDate = DateTime.UtcNow,
                 Status = (int)ReportStatus.Completed
             };
         }
-
     }
 }

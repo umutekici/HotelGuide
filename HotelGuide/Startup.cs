@@ -6,6 +6,9 @@ using HotelMicroService.Services;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Interfaces;
 using RabbitMQ.Services;
+using ReportMicroService.Context;
+using ReportMicroService.Interfaces;
+using ReportMicroService.Services;
 using System.Text.Json;
 
 public class Startup
@@ -36,9 +39,8 @@ public class Startup
         services.AddScoped<IHotelService, HotelService>();
         services.AddScoped<IHotelRepository, HotelRepository>();
         services.AddScoped<IHotelService, HotelService>();
-
+     
         services.AddScoped<ReportListenerService>();
-
 
         services.AddControllers()
             .AddJsonOptions(options =>
