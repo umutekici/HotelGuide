@@ -2,6 +2,7 @@
 using HotelGuide.Model;
 using HotelMicroService.Models;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Interfaces;
 
 namespace HotelGuide.Controllers
 {
@@ -10,10 +11,12 @@ namespace HotelGuide.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelService _hotelService;
+        private readonly IRabbitMQService _rabbitMQService;
 
-        public HotelController(IHotelService hotelService)
+        public HotelController(IHotelService hotelService, IRabbitMQService rabbitMQService)
         {
             _hotelService = hotelService;
+            _rabbitMQService = rabbitMQService;
         }
 
         [HttpPost]

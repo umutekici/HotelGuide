@@ -12,6 +12,7 @@ namespace HotelGuide.Interfaces
         Task DeleteContactAsync(Guid id);
         Task<ContactInfo> GetContactByIdAsync(Guid id);
         Task<IEnumerable<Hotel>> GetByLocationAsync(string location);
+        Task<int> GetPhoneCountByLocationAsync(string location);
 
     }
 }

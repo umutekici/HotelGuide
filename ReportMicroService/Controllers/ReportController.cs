@@ -18,14 +18,6 @@ namespace ReportMicroService.Controllers
             _rabbitMQService = rabbitMQService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] ReportRequest reportRequest)
-        {
-            var report = await _reportService.CreateReportAsync(reportRequest);
-            _rabbitMQService.Publish(reportRequest, "reportQueue");
-            return CreatedAtAction(nameof(GetReports), new { id = report.Id }, report);
-        }
-
         [HttpGet]
         public IActionResult GetReports()
         {
@@ -42,6 +34,13 @@ namespace ReportMicroService.Controllers
                 return NotFound();
             }
             return Ok(report);
+        }
+
+        [HttpPost("request-report")]
+        public IActionResult RequestReport([FromBody] ReportRequest reportRequest)
+        {
+            _rabbitMQService.Publish(reportRequest, "reportQueue");
+            return Accepted();
         }
     }
 }

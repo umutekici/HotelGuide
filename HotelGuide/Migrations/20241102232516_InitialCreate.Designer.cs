@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace HotelGuide.Migrations
+namespace HotelMicroService.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20241023212822_InitialCreate")]
+    [Migration("20241102232516_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,9 +38,8 @@ namespace HotelGuide.Migrations
                     b.Property<Guid>("HotelUUID")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -55,18 +54,6 @@ namespace HotelGuide.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("AuthorityFirstName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("AuthorityLastName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -74,6 +61,34 @@ namespace HotelGuide.Migrations
                     b.HasKey("UUID");
 
                     b.ToTable("Hotels");
+                });
+
+            modelBuilder.Entity("HotelMicroService.Models.Authority", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("HotelUUID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HotelUUID");
+
+                    b.ToTable("Authority");
                 });
 
             modelBuilder.Entity("HotelGuide.Model.ContactInfo", b =>
@@ -85,8 +100,17 @@ namespace HotelGuide.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HotelMicroService.Models.Authority", b =>
+                {
+                    b.HasOne("HotelGuide.Model.Hotel", null)
+                        .WithMany("Authorities")
+                        .HasForeignKey("HotelUUID");
+                });
+
             modelBuilder.Entity("HotelGuide.Model.Hotel", b =>
                 {
+                    b.Navigation("Authorities");
+
                     b.Navigation("ContactInfos");
                 });
 #pragma warning restore 612, 618

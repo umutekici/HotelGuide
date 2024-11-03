@@ -68,10 +68,41 @@ namespace HotelGuide.Repositories
 
         public async Task<IEnumerable<Hotel>> GetByLocationAsync(string location)
         {
-             return _context.Hotels.Where(h => h.ContactInfos.Any(ci =>
-            ci.Type == ContactType.Location &&
-            ci.Content.Equals(location, StringComparison.OrdinalIgnoreCase)))
-        .ToList();
+            try
+            {
+                var result = _context.Hotels
+                .Where(h => h.ContactInfos.Any(ci =>
+                    ci.Type == ContactType.Location &&
+                    ci.Content.ToLower() == location.ToLower()))
+                .ToList();
+
+                return result;
+            }
+
+            catch (Exception ex) {
+                throw new Exception("Failed to retrieve hotels by location.", ex);
+            }
         }
+
+        public async Task<int> GetPhoneCountByLocationAsync(string location)
+        {
+            try
+            {
+                var phoneCount = await _context.Hotels
+                    .Where(h => h.ContactInfos.Any(ci =>
+                        ci.Type == ContactType.Location &&
+                        ci.Content.ToLower() == location.ToLower()))
+                    .SelectMany(h => h.ContactInfos
+                        .Where(ci => ci.Type == ContactType.Phone))
+                    .CountAsync();
+
+                return phoneCount;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to retrieve hotel phones by location.", ex);
+            }
+        }
+
     }
 }

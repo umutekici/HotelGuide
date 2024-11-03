@@ -3,19 +3,21 @@ using HotelMicroService.DTOs;
 using Newtonsoft.Json;
 using RabbitMQ.Interfaces;
 using ReportMicroService.Enums;
+using ReportMicroService.Interfaces;
 using ReportMicroService.Models;
 
 namespace HotelMicroService.Services
 {
     public class ReportListenerService : BackgroundService
     {
-        private readonly IHotelRepository _hotelRepository;
+
         private readonly IRabbitMQService _rabbitMQService;
-        public ReportListenerService(IRabbitMQService rabbitMQService, IHotelRepository hotelRepository)
+        private readonly IServiceProvider _serviceProvider;
+        public ReportListenerService(IRabbitMQService rabbitMQService, IServiceProvider serviceProvider)
         {
             _rabbitMQService = rabbitMQService;
-            _hotelRepository = hotelRepository;
-        }
+            _serviceProvider = serviceProvider;
+    }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -33,14 +35,31 @@ namespace HotelMicroService.Services
 
         private async Task HandleReportRequest(ReportRequest reportRequest)
         {
-            var hotels = await _hotelRepository.GetByLocationAsync(reportRequest.Location);
-            var report = new Report
+            try
             {
-                Location = reportRequest.Location,
-                HotelCount = hotels.Count(),
-                RequestedDate = DateTime.UtcNow,
-                Status = (int)ReportStatus.Completed
-            };
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var reportService = scope.ServiceProvider.GetRequiredService<IReportService>();
+                    var hotelRepository = scope.ServiceProvider.GetRequiredService<IHotelRepository>();
+
+                    var hotels = await hotelRepository.GetByLocationAsync(reportRequest.Location);
+                    var hotelPhones = await hotelRepository.GetPhoneCountByLocationAsync(reportRequest.Location);
+
+                    var report = new Report
+                    {
+                        Location = reportRequest.Location,
+                        HotelCount = hotels.Count(),
+                        PhoneCount = (int)hotelPhones,
+                        RequestedDate = DateTime.UtcNow,
+                        Status = (int)ReportStatus.Completed
+                    };
+
+                    await reportService.SaveReportAsync(report);
+                }
+            }
+            catch (Exception ex) {
+                throw new Exception("An error occurred while generating the report. Please try again later.", ex);
+            }
         }
     }
 }

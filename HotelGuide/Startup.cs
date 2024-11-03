@@ -8,6 +8,7 @@ using RabbitMQ.Interfaces;
 using RabbitMQ.Services;
 using ReportMicroService.Context;
 using ReportMicroService.Interfaces;
+using ReportMicroService.Repositories;
 using ReportMicroService.Services;
 using System.Text.Json;
 
@@ -23,7 +24,12 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
        services.AddDbContext<HotelContext>(options =>
-       options.UseInMemoryDatabase(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                             new MySqlServerVersion(new Version(8, 0, 21))));
+
+        services.AddDbContext<ReportContext>(options =>
+            options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                             new MySqlServerVersion(new Version(8, 0, 21))));
 
         var rabbitMQConfig = Configuration.GetSection("RabbitMQ");
         var hostName = rabbitMQConfig["Host"];
@@ -38,9 +44,9 @@ public class Startup
 
         services.AddScoped<IHotelService, HotelService>();
         services.AddScoped<IHotelRepository, HotelRepository>();
-        services.AddScoped<IHotelService, HotelService>();
-     
-        services.AddScoped<ReportListenerService>();
+        services.AddHostedService<ReportListenerService>();
+        services.AddScoped<IReportRepository, ReportRepository>();
+        services.AddScoped<IReportService, ReportService>();
 
         services.AddControllers()
             .AddJsonOptions(options =>
