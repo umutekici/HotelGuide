@@ -28,6 +28,16 @@ Sample image of the request arriving at the queue:
 
 ![rabbitmq](https://github.com/user-attachments/assets/564b6976-3aab-4682-968d-960106a0c28e)
 
+The report listening class was created to listen to the incoming report request. The incoming Rabbit mq request was subscribed to.
+
+![rabbitmqsubscribe](https://github.com/user-attachments/assets/be276adf-b634-4294-a22f-225a0cf9d274)
+
+After subscribing, the report was saved to the database in response to the relevant report request.
+
+![createreport](https://github.com/user-attachments/assets/5205d2a4-6dee-4dbe-9c66-50cde8af435e)
+
+A screenshot of a sample report record from the database:
+
+![examplereport](https://github.com/user-attachments/assets/e7c2b327-ab3b-47db-9c70-a54d46838617)
+
 Thank you for reading.
-
-
