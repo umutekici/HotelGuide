@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Çözüm Öğeleri", "Çöz
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotelGuide.Tests", "HotelGuide.Tests\HotelGuide.Tests.csproj", "{D0DD2AA5-6D1F-4BBD-B39D-E682F9D1A265}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31017FF6-D0C6-408A-A3F8-5FE30D7A6A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0DD2AA5-6D1F-4BBD-B39D-E682F9D1A265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0DD2AA5-6D1F-4BBD-B39D-E682F9D1A265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0DD2AA5-6D1F-4BBD-B39D-E682F9D1A265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0DD2AA5-6D1F-4BBD-B39D-E682F9D1A265}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
