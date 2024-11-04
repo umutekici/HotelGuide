@@ -1,9 +1,8 @@
-﻿using ReportMicroService.DTOs;
-using ReportMicroService.Models;
+﻿using ReportMicroService.Models;
 
 namespace ReportMicroService.Interfaces
 {
-    public interface IReportService
+    public interface IReportRepository
     {
         List<Report> GetReports();
         Report GetReportById(Guid reportId);

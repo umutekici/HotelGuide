@@ -1,6 +1,8 @@
 ﻿using HotelGuide.Interfaces;
 using HotelGuide.Model;
+using HotelMicroService.Models;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Interfaces;
 
 namespace HotelGuide.Controllers
 {
@@ -9,10 +11,12 @@ namespace HotelGuide.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelService _hotelService;
+        private readonly IRabbitMQService _rabbitMQService;
 
-        public HotelController(IHotelService hotelService)
+        public HotelController(IHotelService hotelService, IRabbitMQService rabbitMQService)
         {
             _hotelService = hotelService;
+            _rabbitMQService = rabbitMQService;
         }
 
         [HttpPost]
@@ -45,6 +49,41 @@ namespace HotelGuide.Controllers
             if (foundHotel == null) return NotFound();
             return Ok(foundHotel);
         }
+
+        [HttpGet("{id}/authorities")]
+        public async Task<ActionResult<IEnumerable<Authority>>> GetAuthorities(Guid id)
+        {
+            var hotel = await _hotelService.GetHotelById(id);
+            if (hotel == null) return NotFound();
+            return hotel.Authorities;
+        }
+
+        #region Contact Operations
+
+        [HttpPost("{id}/contacts")]
+        public async Task<IActionResult> AddContact(Guid id, ContactInfo contact)
+        {
+            var hotel = await _hotelService.GetHotelById(id);
+            if (hotel == null) return NotFound();
+            contact.Id = Guid.NewGuid();
+            await _hotelService.CreateContact(contact);
+            return CreatedAtAction(nameof(GetHotel), new { id }, hotel);
+        }
+
+        [HttpDelete("{hotelId}/contacts/{contactId}")]
+        public async Task<IActionResult> RemoveContact(Guid hotelId, Guid contactId)
+        {
+            var hotel = await _hotelService.GetHotelById(hotelId);
+            if (hotel == null) return NotFound();
+
+            var contact = hotel.ContactInfos.FirstOrDefault(c => c.Id == contactId);
+            if (contact == null) return NotFound();
+
+            await _hotelService.DeleteContact(contact.Id);
+            return NoContent();
+        }
+
+        #endregion
 
     }
 }

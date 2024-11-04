@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using RabbitMQ.Interfaces;
 using ReportMicroService.DTOs;
 using ReportMicroService.Interfaces;
+using ReportMicroService.Models;
 
 namespace ReportMicroService.Controllers
 {
@@ -9,17 +12,12 @@ namespace ReportMicroService.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _reportService;
+        private readonly IRabbitMQService _rabbitMQService;
 
-        public ReportController(IReportService reportService)
+        public ReportController(IReportService reportService, IRabbitMQService rabbitMQService)
         {
             _reportService = reportService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateReport([FromBody] ReportCreateDto reportDto)
-        {
-            var report = await _reportService.CreateReportAsync(reportDto);
-            return CreatedAtAction(nameof(GetReportById), new { reportId = report.ReportId }, report);
+            _rabbitMQService = rabbitMQService;
         }
 
         [HttpGet]
@@ -38,6 +36,21 @@ namespace ReportMicroService.Controllers
                 return NotFound();
             }
             return Ok(report);
+        }
+
+        [HttpPost("request-report")]
+        public async Task<IActionResult> RequestReport([FromBody] ReportRequest reportRequest)
+        {
+            try
+            {
+                _rabbitMQService.Publish(reportRequest, "reportQueue"); 
+                return Accepted(new { message = "Report request accepted" });
+            } 
+            catch (Exception ex)
+            {
+                throw new Exception("Error while waiting for response: " + ex.Message);
+            }
+        
         }
     }
 }

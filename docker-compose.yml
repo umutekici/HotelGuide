@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"     
+      - "15672:15672"  
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  reportservice:
+    image: reportmicroservice
+    build:
+      context: ./ReportMicroService 
+      dockerfile: Dockerfile        
+    ports:
+      - "5001:80"
+    depends_on:
+      - rabbitmq                   
+
+  hotelservice:
+    image: hotelmicroservice
+    build:
+      context: ./HotelMicroService   
+      dockerfile: Dockerfile           
+    ports:
+      - "5002:80"
+    depends_on:
+      - rabbitmq                  

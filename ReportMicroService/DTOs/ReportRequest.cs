@@ -1,7 +1,8 @@
 ﻿namespace ReportMicroService.DTOs
 {
-    public class ReportCreateDto
+    public class ReportRequest
     {
         public string Location { get; set; }
+      
     }
 }

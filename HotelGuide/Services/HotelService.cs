@@ -31,5 +31,25 @@ namespace HotelGuide.Services
         {
             return await _hotelRepository.GetHotelByIdAsync(uuid);
         }
+
+        public async Task CreateContact(Hotel hotel)
+        {
+            await _hotelRepository.CreateHotelAsync(hotel);
+        }
+
+        public async Task CreateContact(ContactInfo contactInfo)
+        {
+            await _hotelRepository.CreateContactAsync(contactInfo);
+        }
+
+        public async Task DeleteContact(Guid id)
+        {
+            await _hotelRepository.DeleteContactAsync(id);
+        }
+
+        public async Task<ContactInfo> GetContactById(Guid id)
+        {
+            return await _hotelRepository.GetContactByIdAsync(id);
+        }
     }
 }
